@@ -1,0 +1,58 @@
+version: '3'
+services:
+  nginx:
+    build:
+      dockerfile: ./alura-docker-cap06/docker/ngix.dockerfile
+      context: .
+      image: victor/nginx
+      container_name: nginx
+      port:
+       - "80:80"
+      networks:
+        - producao-rede
+  mongodb:
+      image: mongo
+      networks:
+        - producao-rede
+  node1:
+    build:
+      dockerfile: ./alura-docker-cap06/docker/alura-books.dockerfile
+      context: .
+    image: victor/alura-books
+    container_name: alura-books1
+    port:
+      - "3000"
+    networks:
+      - producao-rede
+    depends_on:
+      - "mongodb"
+
+  node2:
+    build:
+      dockerfile: ./alura-docker-cap06/docker/alura-books.dockerfile
+      context: .
+    image: victor/alura-books
+    container_name: alura-books2
+    port:
+      - "3000"
+    networks:
+      - producao-rede
+    depends_on:
+      - "mongodb"
+
+  node3:
+    build:
+      dockerfile: ./alura-docker-cap06/docker/alura-books.dockerfile
+      context: .
+    image: victor/alura-books
+    container_name: alura-books3
+    port:
+      - "3000"
+    networks:
+      - producao-rede
+    depends_on:
+      - "mongodb"
+
+networks:
+  - producao-rede:
+      drive: bridge
